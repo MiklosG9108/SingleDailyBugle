@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SingleDailyBugle.Models;
+using SingleDailyBugle.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,8 @@ string connectionString = builder.Configuration.GetConnectionString("Default")
     ?? throw new InvalidOperationException("The Default ConnectionString is missing.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
+
+builder.Services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
