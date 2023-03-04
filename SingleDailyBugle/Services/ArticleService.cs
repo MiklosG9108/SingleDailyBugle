@@ -51,16 +51,17 @@ public class ArticleService
     public async Task<Article> GetArticleByIdAsync(int id)
     {
         var article = await _context.Articles.FindAsync(id);
+        if (article == null)
+        {
+            throw new EditorialException($"There is no article with this id: {id}.");
+        }
         return article;
     }
 
     public async Task<Article> ModifyArticleAsync(int id, ArticleInputForm modifiedArticle)
     {
         var article = await GetArticleByIdAsync(id);
-        if (article == null)
-        {
-            throw new EditorialException($"There is no article with this id: {id}.");
-        }
+        
 
         if ((!article.Author.Equals(modifiedArticle.Author)) && (!modifiedArticle.Author.IsNullOrEmpty()))
         {
@@ -89,6 +90,14 @@ public class ArticleService
         _= await _context.SaveChangesAsync();
 
         return article;
+
+    }
+
+    public async Task<Article> DeleteArticleAsync(int id)
+    {
+        var article = await GetArticleByIdAsync(id);
+        
+
 
     }
 
