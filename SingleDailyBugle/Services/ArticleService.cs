@@ -16,7 +16,7 @@ public class ArticleService : IArticleService
         _dateTimeProvider = dateTimeProvider;
     }
 
-    public async Task CreateArticleAsync(ArticleInputForm baseArticle)
+    public async Task<Article> CreateArticleAsync(ArticleInputForm baseArticle)
     {
         ArgumentException.ThrowIfNullOrEmpty(nameof(baseArticle));
 
@@ -25,7 +25,7 @@ public class ArticleService : IArticleService
             baseArticle.Synopsis is not null &&
             baseArticle.Body is not null)
         {
-            _context.Articles.Add(new Article
+          _context.Articles.Add(new Article
             {
                 Author = baseArticle.Author,
                 Title = baseArticle.Title,
@@ -37,6 +37,7 @@ public class ArticleService : IArticleService
             });
 
             _ = await _context.SaveChangesAsync();
+            
         }
         throw new EditorialException("You must fill out with words every brackets");
     }
@@ -87,7 +88,6 @@ public class ArticleService : IArticleService
             article.ModifiedAt = _dateTimeProvider.UtcNow;
         }
 
-        //_ =  _context.Update(article);
         _ = await _context.SaveChangesAsync();
 
         return article;
@@ -120,6 +120,8 @@ public class ArticleService : IArticleService
 
     private async Task<List<Article>> GetAllArticles()
     {
-        return await _context.Articles.ToListAsync();
+        return await _context.Articles
+            .OrderBy(article => article.Id)
+            .ToListAsync();
     }
 }

@@ -6,7 +6,7 @@ namespace SingleDailyBugle.Services
 {
     public interface IArticleService
     {
-        Task CreateArticleAsync(ArticleInputForm baseArticle);
+        Task<Article> CreateArticleAsync(ArticleInputForm baseArticle);
         Task<Article> DeleteArticleAsync(int id);
         Task<IEnumerable<ArticleListItem>> GetAllArticlesAsync();
         Task<Article> GetArticleByIdAsync(int id);
