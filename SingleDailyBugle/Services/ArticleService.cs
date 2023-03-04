@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using SingleDailyBugle.Models;
 using SingleDailyBugle.Models.DTOs;
 using SingleDailyBugle.Models.ViewModels;
@@ -45,6 +46,50 @@ public class ArticleService
         List<Article> articles = await GetAllArticles();
         IEnumerable<ArticleListItem> listedArticles = GetArticleListItem(articles);
         return listedArticles;
+    }
+
+    public async Task<Article> GetArticleByIdAsync(int id)
+    {
+        var article = await _context.Articles.FindAsync(id);
+        return article;
+    }
+
+    public async Task<Article> ModifyArticleAsync(int id, ArticleInputForm modifiedArticle)
+    {
+        var article = await GetArticleByIdAsync(id);
+        if (article == null)
+        {
+            throw new EditorialException($"There is no article with this id: {id}.");
+        }
+
+        if ((!article.Author.Equals(modifiedArticle.Author)) && (!modifiedArticle.Author.IsNullOrEmpty()))
+        {
+            article.Author = modifiedArticle.Author;
+            article.ModifiedAt = _dateTimeProvider.UtcNow;
+        }
+
+        if ((!article.Title.Equals(modifiedArticle.Title)) && (!modifiedArticle.Title.IsNullOrEmpty()))
+        {
+            article.Title = modifiedArticle.Title;
+            article.ModifiedAt = _dateTimeProvider.UtcNow;
+        }
+
+        if ((!article.Synopsis.Equals(modifiedArticle.Synopsis)) && (!modifiedArticle.Synopsis.IsNullOrEmpty()))
+        {
+            article.Synopsis = modifiedArticle.Synopsis;
+            article.ModifiedAt = _dateTimeProvider.UtcNow;
+        }
+        
+        if ((!article.Body.Equals(modifiedArticle.Body)) && (!modifiedArticle.Body.IsNullOrEmpty()))
+        {
+            article.Body = modifiedArticle.Body;
+            article.ModifiedAt = _dateTimeProvider.UtcNow;
+        }
+
+        _= await _context.SaveChangesAsync();
+
+        return article;
+
     }
 
     private IEnumerable<ArticleListItem> GetArticleListItem(List<Article> articles)
