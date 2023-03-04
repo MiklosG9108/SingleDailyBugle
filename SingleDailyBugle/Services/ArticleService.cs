@@ -87,6 +87,7 @@ public class ArticleService
             article.ModifiedAt = _dateTimeProvider.UtcNow;
         }
 
+        //_ =  _context.Update(article);
         _= await _context.SaveChangesAsync();
 
         return article;
@@ -96,9 +97,12 @@ public class ArticleService
     public async Task<Article> DeleteArticleAsync(int id)
     {
         var article = await GetArticleByIdAsync(id);
+        article.IsDeleted = true;
+        article.ModifiedAt = _dateTimeProvider.UtcNow;
+
+        await _context.SaveChangesAsync();
+        return article;
         
-
-
     }
 
     private IEnumerable<ArticleListItem> GetArticleListItem(List<Article> articles)
