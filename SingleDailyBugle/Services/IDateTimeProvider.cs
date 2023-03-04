@@ -1,8 +1,7 @@
-﻿namespace SingleDailyBugle.Services
+﻿namespace SingleDailyBugle.Services;
+
+public interface IDateTimeProvider
 {
-    public interface IDateTimeProvider
-    {
-        DateTime Now { get; }
-        DateTime UtcNow { get; }
-    }
+    DateTime Now { get; }
+    DateTime UtcNow { get; }
 }
