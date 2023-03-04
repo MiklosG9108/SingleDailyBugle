@@ -1,13 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace SingleDailyBugle.Models
-{
-    public class ApplicationDbContext : DbContext
-    {
-        public ApplicationDbContext(DbContextOptions options) : base(options)
-        {
-        }
+namespace SingleDailyBugle.Models;
 
-        public DbSet<Article> Articles { get; set; }
+public class ApplicationDbContext : DbContext
+{
+    public ApplicationDbContext(DbContextOptions options) : base(options)
+    {
     }
+
+    public DbSet<Article> Articles { get; set; }
 }
