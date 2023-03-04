@@ -7,5 +7,7 @@ namespace SingleDailyBugle.Models
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
         }
+
+        public DbSet<Article> Articles { get; set; }
     }
 }
