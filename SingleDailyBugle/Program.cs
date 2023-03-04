@@ -29,4 +29,10 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+using (var scope = app.Services.CreateScope())
+using (var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>())
+{
+    await context.Database.MigrateAsync();
+}
+
 app.Run();
