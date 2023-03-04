@@ -6,7 +6,7 @@ using SingleDailyBugle.Models.ViewModels;
 
 namespace SingleDailyBugle.Services;
 
-public class ArticleService
+public class ArticleService : IArticleService
 {
     private readonly ApplicationDbContext _context;
     private readonly IDateTimeProvider _dateTimeProvider;
@@ -20,9 +20,9 @@ public class ArticleService
     {
         ArgumentException.ThrowIfNullOrEmpty(nameof(baseArticle));
 
-        if (baseArticle.Author is not null && 
-            baseArticle.Title is not null && 
-            baseArticle.Synopsis is not null && 
+        if (baseArticle.Author is not null &&
+            baseArticle.Title is not null &&
+            baseArticle.Synopsis is not null &&
             baseArticle.Body is not null)
         {
             _context.Articles.Add(new Article
@@ -36,7 +36,7 @@ public class ArticleService
                 IsDeleted = false
             });
 
-            _= await _context.SaveChangesAsync();
+            _ = await _context.SaveChangesAsync();
         }
         throw new EditorialException("You must fill out with words every brackets");
     }
@@ -61,7 +61,7 @@ public class ArticleService
     public async Task<Article> ModifyArticleAsync(int id, ArticleInputForm modifiedArticle)
     {
         var article = await GetArticleByIdAsync(id);
-        
+
 
         if ((!article.Author.Equals(modifiedArticle.Author)) && (!modifiedArticle.Author.IsNullOrEmpty()))
         {
@@ -80,7 +80,7 @@ public class ArticleService
             article.Synopsis = modifiedArticle.Synopsis;
             article.ModifiedAt = _dateTimeProvider.UtcNow;
         }
-        
+
         if ((!article.Body.Equals(modifiedArticle.Body)) && (!modifiedArticle.Body.IsNullOrEmpty()))
         {
             article.Body = modifiedArticle.Body;
@@ -88,7 +88,7 @@ public class ArticleService
         }
 
         //_ =  _context.Update(article);
-        _= await _context.SaveChangesAsync();
+        _ = await _context.SaveChangesAsync();
 
         return article;
 
@@ -102,7 +102,7 @@ public class ArticleService
 
         await _context.SaveChangesAsync();
         return article;
-        
+
     }
 
     private IEnumerable<ArticleListItem> GetArticleListItem(List<Article> articles)
