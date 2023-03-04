@@ -1,6 +1,13 @@
+using Microsoft.EntityFrameworkCore;
+using SingleDailyBugle.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+string connectionString = builder.Configuration.GetConnectionString("Default")
+    ?? throw new InvalidOperationException("The Default ConnectionString is missing.");
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(connectionString));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
