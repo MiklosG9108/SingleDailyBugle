@@ -1,5 +1,7 @@
-﻿using SingleDailyBugle.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using SingleDailyBugle.Models;
 using SingleDailyBugle.Models.DTOs;
+using SingleDailyBugle.Models.ViewModels;
 
 namespace SingleDailyBugle.Services;
 
@@ -38,6 +40,28 @@ public class ArticleService
         throw new EditorialException("You must fill out with words every brackets");
     }
 
-    public async 
+    public async Task<IEnumerable<ArticleListItem>> GetAllArticlesAsync()
+    {
+        List<Article> articles = await GetAllArticles();
+        IEnumerable<ArticleListItem> listedArticles = GetArticleListItem(articles);
+        return listedArticles;
+    }
 
+    private IEnumerable<ArticleListItem> GetArticleListItem(List<Article> articles)
+    {
+        return articles
+            .Select(article => new ArticleListItem
+            {
+                Id = article.Id,
+                Author = article.Author,
+                Title = article.Title,
+                Synopsis = article.Synopsis,
+            })
+            .ToList();
+    }
+
+    private async Task<List<Article>> GetAllArticles()
+    {
+        return await _context.Articles.ToListAsync();
+    }
 }
