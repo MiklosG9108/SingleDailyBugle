@@ -11,4 +11,6 @@ public class ArticleListItem
     public string Title { get; set; } = string.Empty;
     [Required]
     public string Synopsis { get; set; } = string.Empty;
+
+    public int CommentCounter { get; set; }
 }

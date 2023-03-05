@@ -107,6 +107,7 @@ public class ArticleService : IArticleService
 
     private IEnumerable<ArticleListItem> GetArticleListItem(List<Article> articles)
     {
+
         return articles
             .Select(article => new ArticleListItem
             {
@@ -114,6 +115,7 @@ public class ArticleService : IArticleService
                 Author = article.Author,
                 Title = article.Title,
                 Synopsis = article.Synopsis,
+                CommentCounter = article.Comments.Count(),
             })
             .ToList();
     }
