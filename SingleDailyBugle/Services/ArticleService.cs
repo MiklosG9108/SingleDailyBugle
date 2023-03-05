@@ -25,7 +25,7 @@ public class ArticleService : IArticleService
             baseArticle.Synopsis is not null &&
             baseArticle.Body is not null)
         {
-          _context.Articles.Add(new Article
+            _context.Articles.Add(new Article
             {
                 Author = baseArticle.Author,
                 Title = baseArticle.Title,
@@ -115,7 +115,7 @@ public class ArticleService : IArticleService
                 Author = article.Author,
                 Title = article.Title,
                 Synopsis = article.Synopsis,
-                CommentCounter = article.Comments.Count(),
+                NumberOfComments = _context.Comments.Where(comment => comment.ArticleId == article.Id).Count(),
             })
             .ToList();
     }

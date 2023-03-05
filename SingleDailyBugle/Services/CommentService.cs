@@ -24,20 +24,17 @@ namespace SingleDailyBugle.Services
                 throw new EditorialException("You must fill out the necessary brackets with words");
             }
 
-            var article = await _articleService.GetArticleByIdAsync(articleId);
+            var currentArticle = await _articleService.GetArticleByIdAsync(articleId);
 
             Comment comment = new Comment
             {
                 Author = commentInput.Author,
                 Body = commentInput.Body,
                 CreatedAt = _dateTimeProvider.UtcNow,
-                Article = article,
-                ArticleId = article.Id
+                Article = currentArticle,
             };
 
             _context.Comments.Add(comment);
-
-            //article.Comments.Add(comment);
 
             _ = await _context.SaveChangesAsync();
         }

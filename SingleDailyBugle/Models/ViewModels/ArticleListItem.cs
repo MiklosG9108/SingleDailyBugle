@@ -12,5 +12,5 @@ public class ArticleListItem
     [Required]
     public string Synopsis { get; set; } = string.Empty;
 
-    public int CommentCounter { get; set; }
+    public int NumberOfComments { get; set; }
 }
