@@ -76,10 +76,35 @@ public class ArticleService : IArticleService
             Body = article.Body,
             CreatedAt = article.CreatedAt,
             ModifiedAt = article.ModifiedAt,
+            NumberOfRatings = GetNumberOfRatings(article),
+            AverageRating = ComputeAverage(article),
+            IsDeleted = article.IsDeleted,
             Comments = commentsOfCurrentArticle
         };
 
         return articleFullView;
+    }
+
+    private string ComputeAverage(Article article)
+    {
+        int numberOfRatings = GetNumberOfRatings(article);
+        if (numberOfRatings == 0)
+        {
+            return "Nobody rated this article yet. Be the first!";
+        }
+
+        var result = _context.Ratings.Where(rating => rating.ArticleId == article.Id)
+                                     .Select(rating => rating.Value)
+                                     .Average();
+
+        string average = result.ToString("N2");
+        return average;
+    }
+
+    private int GetNumberOfRatings(Article article)
+    {
+        int numberOfRatings = _context.Ratings.Where(rating => rating.ArticleId == article.Id).Count();
+        return numberOfRatings;
     }
 
     public async Task<Article> ModifyArticleAsync(int id, ArticleInputForm modifiedArticle)
@@ -131,14 +156,16 @@ public class ArticleService : IArticleService
     private IEnumerable<ArticleListItem> GetArticleListItem(List<Article> articles)
     {
 
-        return articles
-            .Select(article => new ArticleListItem
+       return articles
+            .Select( article => new ArticleListItem
             {
                 Id = article.Id,
                 Author = article.Author,
                 Title = article.Title,
                 Synopsis = article.Synopsis,
                 NumberOfComments = _context.Comments.Where(comment => comment.ArticleId == article.Id).Count(),
+                NumberOfRatings = GetNumberOfRatings(article),
+                AverageRating = ComputeAverage(article),
             })
             .ToList();
     }
