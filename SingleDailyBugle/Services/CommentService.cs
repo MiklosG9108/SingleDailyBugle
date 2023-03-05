@@ -3,7 +3,7 @@ using SingleDailyBugle.Models.DTOs;
 
 namespace SingleDailyBugle.Services
 {
-    public class CommentService
+    public class CommentService : ICommentService
     {
         private readonly ApplicationDbContext _context;
         private readonly IDateTimeProvider _dateTimeProvider;
@@ -37,9 +37,9 @@ namespace SingleDailyBugle.Services
 
             _context.Comments.Add(comment);
 
-            article.Comments.Add(comment);
+            //article.Comments.Add(comment);
 
-            _= await _context.SaveChangesAsync();
+            _ = await _context.SaveChangesAsync();
         }
     }
 }
