@@ -16,4 +16,5 @@ public class Article
     public DateTime CreatedAt { get; set; }
     public DateTime ModifiedAt { get; set; }
     public bool IsDeleted { get; set; }
+    public ICollection<Comment> Comments { get; set; } = new List<Comment>();
 }
