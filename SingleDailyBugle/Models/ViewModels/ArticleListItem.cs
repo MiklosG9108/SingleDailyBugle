@@ -11,6 +11,7 @@ public class ArticleListItem
     public string Title { get; set; } = string.Empty;
     [Required]
     public string Synopsis { get; set; } = string.Empty;
-
     public int NumberOfComments { get; set; }
+    public string AverageRating { get; set; } = string.Empty;
+    public int NumberOfRatings { get; set; }
 }

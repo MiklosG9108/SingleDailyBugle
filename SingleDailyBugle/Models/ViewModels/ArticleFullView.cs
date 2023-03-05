@@ -15,6 +15,8 @@ namespace SingleDailyBugle.Models.ViewModels
         public string Body { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
+        public string AverageRating { get; set; } = string.Empty;
+        public int NumberOfRatings { get; set; }
         public bool IsDeleted { get; set; }
         public List<string> Comments { get; set; } = new();
     }
