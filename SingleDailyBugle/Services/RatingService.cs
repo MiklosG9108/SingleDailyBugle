@@ -3,7 +3,7 @@ using SingleDailyBugle.Models.DTOs;
 
 namespace SingleDailyBugle.Services;
 
-public class RatingService
+public class RatingService : IRatingService
 {
     private readonly ApplicationDbContext _context;
     private readonly IArticleService _articleService;
