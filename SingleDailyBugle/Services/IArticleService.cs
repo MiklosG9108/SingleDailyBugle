@@ -10,6 +10,7 @@ namespace SingleDailyBugle.Services
         Task<Article> DeleteArticleAsync(int id);
         Task<IEnumerable<ArticleListItem>> GetAllArticlesAsync();
         Task<Article> GetArticleByIdAsync(int id);
+        Task<ArticleFullView> GetArticleWithCommentsAsync(Article article);
         Task<Article> ModifyArticleAsync(int id, ArticleInputForm modifiedArticle);
     }
 }

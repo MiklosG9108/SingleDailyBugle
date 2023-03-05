@@ -25,10 +25,11 @@ public class ArticlesController : ControllerBase
     }
 
     [HttpGet(nameof(GetArticle))]
-    public async Task<ActionResult<Article>> GetArticle(int id)
+    public async Task<ActionResult<ArticleFullView>> GetArticle(int id)
     {
         var article = await _articleService.GetArticleByIdAsync(id);
-        return Ok(article);
+        var articleFullView = await _articleService.GetArticleWithCommentsAsync(article);
+        return Ok(articleFullView);
     }
 
     [HttpPut(nameof(ModifyArticle))]

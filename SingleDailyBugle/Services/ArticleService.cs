@@ -59,6 +59,29 @@ public class ArticleService : IArticleService
         return article;
     }
 
+    public async Task<ArticleFullView> GetArticleWithCommentsAsync(Article article)
+    {
+        var commentsOfCurrentArticle = await _context.Comments
+            .Where(comment => comment.ArticleId == article.Id)
+            .OrderByDescending(comment => comment.CreatedAt)
+            .Select(comment => comment.Body)
+            .ToListAsync();
+
+        ArticleFullView articleFullView = new ArticleFullView
+        {
+            Id = article.Id,
+            Author = article.Author,
+            Title = article.Title,
+            Synopsis = article.Synopsis,
+            Body = article.Body,
+            CreatedAt = article.CreatedAt,
+            ModifiedAt = article.ModifiedAt,
+            Comments = commentsOfCurrentArticle
+        };
+
+        return articleFullView;
+    }
+
     public async Task<Article> ModifyArticleAsync(int id, ArticleInputForm modifiedArticle)
     {
         var article = await GetArticleByIdAsync(id);
