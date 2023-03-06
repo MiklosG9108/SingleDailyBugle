@@ -6,5 +6,5 @@ namespace SingleDailyBugle.Models;
 public class ApplicationUser : IdentityUser
 {
     [Required]
-    public string PossibleRoles { get; set; } = string.Empty;
+    public string Role { get; set; } = string.Empty;
 }
